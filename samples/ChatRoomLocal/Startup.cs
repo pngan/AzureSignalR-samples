@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Azure.SignalR.Samples.ChatRoom
 {
+    // To run, create an Azure Signalr service, and add end access key as a secret 
+    // dotnet user-secrets set Azure:SignalR:ConnectionString "endpoint key"
+
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -19,14 +23,14 @@ namespace Microsoft.Azure.SignalR.Samples.ChatRoom
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSignalR();
+            services.AddSignalR().AddAzureSignalR();
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseMvc();
             app.UseFileServer();
-            app.UseSignalR(routes =>
+            app.UseAzureSignalR(routes =>
             {
                 routes.MapHub<Chat>("/chat");
             });
